@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Humming Agent AI — Live Research Brief</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563eb; --blue-light: #3b82f6; --teal: #06b6d4;
+      --dark: #0f172a; --slate: #1e293b; --slate2: #1a2744;
+      --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1;
+      --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569;
+      --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --purple: #8b5cf6;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: #e2e8f0;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: rgba(15,23,42,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px; position: sticky; top: 0; z-index: 100;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      border-radius: 7px; display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+    .logo-name { font-weight: 700; font-size: 16px; color: #fff; }
+    .logo-sub { font-size: 12px; color: var(--gray-500); margin-top: -2px; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .live-badge {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);
+      color: var(--green); padding: 4px 10px; border-radius: 100px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .live-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+    .ask-btn {
+      background: var(--blue); color: #fff; border: none;
+      padding: 7px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 6px;
+    }
+    .ask-btn:hover { background: var(--blue-light); transform: translateY(-1px); }
+
+    /* ── META BAR ── */
+    .meta-bar {
+      background: rgba(255,255,255,0.025);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 10px 32px;
+      display: flex; align-items: center; gap: 24px;
+      font-size: 12px; color: var(--gray-500);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .meta-item { display: flex; align-items: center; gap: 6px; }
+    .meta-item span { color: var(--gray-300); }
+
+    /* ── MAIN ── */
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
+
+    /* ── INTRO ── */
+    .intro {
+      margin-bottom: 32px;
+      padding: 24px 28px;
+      background: rgba(37,99,235,0.06);
+      border: 1px solid rgba(37,99,235,0.2);
+      border-radius: 14px;
+    }
+    .intro-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--blue-light); margin-bottom: 8px; }
+    .intro-text { font-size: 14px; color: var(--gray-300); line-height: 1.7; }
+    .intro-text strong { color: #fff; }
+
+    /* ── COMPANY GRID ── */
+    .company-grid { display: flex; flex-direction: column; gap: 20px; }
+
+    .company-card {
+      background: var(--slate);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; overflow: hidden;
+    }
+
+    .company-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background .15s;
+    }
+    .company-header:hover { background: rgba(255,255,255,0.03); }
+
+    .company-left { display: flex; align-items: center; gap: 14px; }
+
+    .ticker-badge {
+      background: rgba(37,99,235,0.15); border: 1px solid rgba(37,99,235,0.3);
+      color: var(--blue-light); font-family: 'JetBrains Mono', monospace;
+      font-weight: 700; font-size: 13px; padding: 4px 10px; border-radius: 7px;
+      min-width: 52px; text-align: center;
+    }
+
+    .company-name-block {}
+    .company-name { font-size: 17px; font-weight: 700; color: #fff; }
+    .company-sector { font-size: 12px; color: var(--gray-500); margin-top: 1px; }
+
+    .earnings-tag {
+      font-size: 11px; color: var(--gray-400);
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+      padding: 4px 10px; border-radius: 6px;
+    }
+
+    .company-financials-row {
+      display: flex; gap: 20px; align-items: center;
+    }
+
+    .fin-item { text-align: right; }
+    .fin-label { font-size: 10px; color: var(--gray-500); text-transform: uppercase; letter-spacing: .05em; }
+    .fin-value { font-size: 16px; font-weight: 700; color: #fff; }
+    .fin-change { font-size: 11px; margin-top: 1px; }
+    .up { color: var(--green); }
+    .down { color: var(--red); }
+    .neutral { color: var(--yellow); }
+
+    .expand-icon { color: var(--gray-500); font-size: 18px; transition: transform .2s; margin-left: 16px; }
+    .company-card.open .expand-icon { transform: rotate(180deg); }
+
+    /* ── EXPANDED CONTENT ── */
+    .company-body { display: none; padding: 0 24px 24px; }
+    .company-card.open .company-body { display: block; }
+
+    .body-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+    @media (max-width: 700px) { .body-grid { grid-template-columns: 1fr; } }
+
+    .body-section {}
+    .body-section-title {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--gray-500); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .segment-list { display: flex; flex-direction: column; gap: 8px; }
+    .segment-item {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 9px; padding: 10px 12px;
+    }
+    .seg-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+    .seg-name { font-size: 13px; font-weight: 600; color: var(--gray-200); }
+    .seg-rev { font-size: 13px; font-weight: 700; color: #fff; }
+    .seg-change { font-size: 11px; }
+    .seg-note { font-size: 12px; color: var(--gray-500); margin-top: 3px; }
+
+    .signal-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .signal-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 13px; color: var(--gray-300); line-height: 1.5;
+    }
+    .signal-icon { flex-shrink: 0; margin-top: 1px; }
+
+    .analyst-box {
+      grid-column: 1 / -1;
+      background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15);
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .analyst-label { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--blue-light); margin-bottom: 6px; }
+    .analyst-text { font-size: 13px; color: var(--gray-300); line-height: 1.6; }
+
+    .relevance-box {
+      grid-column: 1 / -1;
+      display: flex; gap: 8px; align-items: flex-start;
+      font-size: 12px; color: var(--gray-400);
+      padding: 10px 14px; background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05); border-radius: 8px;
+    }
+    .relevance-label { flex-shrink: 0; font-weight: 600; color: var(--gray-500); }
+
+    /* ── ASK PEPPER PANEL ── */
+    .ask-panel {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(15,23,42,0.98); backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(37,99,235,0.3);
+      padding: 16px 24px; z-index: 200;
+      transform: translateY(100%); transition: transform .3s ease;
+    }
+    .ask-panel.open { transform: translateY(0); }
+
+    .ask-panel-inner { max-width: 800px; margin: 0 auto; }
+    .ask-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .ask-panel-title { font-weight: 600; font-size: 14px; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .close-btn { background: none; border: none; color: var(--gray-500); font-size: 20px; cursor: pointer; padding: 0 4px; }
+    .close-btn:hover { color: #fff; }
+
+    .ask-suggestions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .suggestion-chip {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      color: var(--gray-300); padding: 6px 12px; border-radius: 100px;
+      font-size: 12px; cursor: pointer; transition: all .2s;
+    }
+    .suggestion-chip:hover { background: rgba(37,99,235,0.15); border-color: rgba(37,99,235,0.4); color: #fff; }
+
+    .ask-input-row { display: flex; gap: 10px; }
+    .ask-input {
+      flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; padding: 12px 16px; border-radius: 10px; font-size: 14px;
+      font-family: 'Inter', sans-serif; outline: none;
+    }
+    .ask-input:focus { border-color: rgba(37,99,235,0.5); background: rgba(255,255,255,0.08); }
+    .ask-input::placeholder { color: var(--gray-600); }
+    .ask-submit {
+      background: var(--blue); color: #fff; border: none;
+      padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: all .2s; white-space: nowrap;
+    }
+    .ask-submit:hover { background: var(--blue-light); }
+
+    .ask-response {
+      margin-top: 14px; padding: 14px 16px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; font-size: 13px; color: var(--gray-300); line-height: 1.7;
+      display: none;
+    }
+    .ask-response.visible { display: block; }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px 24px;
+      border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; color: var(--gray-600);
+    }
+    .footer-logo { font-weight: 700; color: var(--gray-500); }
+    .footer-link { color: var(--blue-light); text-decoration: none; }
+    .footer-link:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      header { padding: 0 16px; }
+      main { padding: 20px 16px 120px; }
+      .company-financials-row { display: none; }
+      .meta-bar { flex-wrap: wrap; gap: 10px; padding: 10px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo">
+    <div class="logo-mark">🤖</div>
+    <div>
+      <div class="logo-name">Humming Agent AI</div>
+      <div class="logo-sub">Research Bot</div>
+    </div>
+  </a>
+  <div class="header-right">
+    <div class="live-badge"><div class="live-dot"></div>Live Data</div>
+    <button class="ask-btn" onclick="toggleAskPanel()">💬 Ask Pepper</button>
+  </div>
+</header>
+
+<div class="meta-bar" id="meta-bar">
+  <div class="meta-item">client: <span id="meta-client">—</span></div>
+  <div class="meta-item">updated: <span id="meta-updated">—</span></div>
+  <div class="meta-item">next run: <span id="meta-next">—</span></div>
+  <div class="meta-item">cadence: <span id="meta-cadence">—</span></div>
+</div>
+
+<main>
+  <div class="intro">
+    <div class="intro-label">What you're looking at</div>
+    <div class="intro-text">
+      This brief was generated automatically by your <strong>Humming Agent AI Research Bot</strong>.
+      It pulled live earnings data, product announcements, and forward-looking signals for your tracked companies.
+      <strong>You didn't have to do anything</strong> — it ran on schedule and the data was waiting for you.
+      Click any company to expand. Use <strong>Ask Pepper</strong> to query across all three.
+    </div>
+  </div>
+
+  <div class="company-grid" id="company-grid">
+    <!-- Populated by JS -->
+  </div>
+</main>
+
+<footer class="page-footer">
+  <div class="footer-logo">Humming Agent AI</div>
+  <div>
+    Want this for your company? <a href="mailto:joey@hummingagent.ai" class="footer-link">joey@hummingagent.ai</a>
+  </div>
+</footer>
+
+<!-- ASK PEPPER PANEL -->
+<div class="ask-panel" id="ask-panel">
+  <div class="ask-panel-inner">
+    <div class="ask-panel-header">
+      <div class="ask-panel-title">🌶️ Ask Pepper — query your research brief</div>
+      <button class="close-btn" onclick="toggleAskPanel()">×</button>
+    </div>
+    <div class="ask-suggestions">
+      <div class="suggestion-chip" onclick="askSuggestion(this)">Which company has the strongest AI signal?</div>
+      <div class="suggestion-chip" onclick="askSuggestion(this)">Where is supply most constrained right now?</div>
+      <div class="suggestion-chip" onclick="askSuggestion(this)">Summarize all three companies in 3 sentences</div>
+      <div class="suggestion-chip" onclick="askSuggestion(this)">What should we watch in Q3 2026?</div>
+    </div>
+    <div class="ask-input-row">
+      <input class="ask-input" id="ask-input" placeholder="Ask anything about these companies..." onkeydown="if(event.key==='Enter')submitQuestion()" />
+      <button class="ask-submit" onclick="submitQuestion()">Ask →</button>
+    </div>
+    <div class="ask-response" id="ask-response"></div>
+  </div>
+</div>
+
+<script>
+// ── EMBEDDED DATA (updated by research agent) ──
+const DATA = {
+  "meta": {
+    "client": "Prismark",
+    "last_updated": "2026-05-19T21:15:00-06:00",
+    "next_update": "2026-08-01T07:00:00-06:00",
+    "agent": "Humming Agent AI — Research Bot",
+    "cadence": "Quarterly (earnings season) + weekly news sweep"
+  },
+  "companies": [
+    {
+      "ticker": "QCOM",
+      "name": "Qualcomm",
+      "sector": "Semiconductors",
+      "relevance": "Mobile SoC, RF front-end, modem supply chain",
+      "last_earnings": "Q2 FY2026 (Apr 29, 2026)",
+      "financials": {
+        "revenue": "$10.6B",
+        "revenue_change": "-3% YoY",
+        "eps": "$2.65",
+        "eps_beat": "+16% vs consensus",
+        "stock_reaction": "+15% post-earnings"
+      },
+      "key_segments": [
+        { "name": "Automotive", "revenue": "$1.33B", "change": "+38% YoY", "note": "Record quarter; on track for $6B+ annualized run rate by end of FY2026" },
+        { "name": "IoT", "revenue": "$1.73B", "change": "+9% YoY", "note": "PC and edge AI devices driving growth" },
+        { "name": "Handsets (QCT)", "revenue": "$7.5B", "change": "Stable", "note": "Apple modem loss absorbed; diversification offsetting headwinds" }
+      ],
+      "forward_signals": [
+        "Custom AI silicon shipping to leading hyperscaler data center client H2 2026",
+        "OpenAI collaboration announced — AI-focused smartphone chip targeting 2028 device",
+        "Agentic smartphone tier emerging (ZTE Nubia ByteDance, Xiaomi frameworks)",
+        "Memory shortage creating near-term mobile headwinds across the industry"
+      ],
+      "analyst_take": "Post-Apple modem reset largely absorbed. Diversification into auto and AI data center is the new growth story. Watch hyperscaler silicon ramp in H2 2026."
+    },
+    {
+      "ticker": "AAPL",
+      "name": "Apple",
+      "sector": "Consumer Electronics / Software",
+      "relevance": "End-market demand signal; A-series chip architecture; component sourcing",
+      "last_earnings": "Q2 FY2026 (Apr 30, 2026)",
+      "financials": {
+        "revenue": "$111.2B",
+        "revenue_change": "+17% YoY",
+        "eps": "$2.01",
+        "eps_change": "+22% YoY",
+        "net_income": "$29.58B",
+        "stock_reaction": "Guidance raised above expectations"
+      },
+      "key_segments": [
+        { "name": "iPhone", "revenue": "$57.99B", "change": "+22% YoY", "note": "March quarter record; iPhone 17 family strongest lineup in Apple history; market share gains" },
+        { "name": "Services", "revenue": "$30.98B", "change": "+16.3% YoY", "note": "All-time high; double-digit growth in developed + emerging markets" },
+        { "name": "Other Products", "revenue": "$22.23B", "change": "+8% YoY", "note": "Mac and iPad stable; Vision Pro volume still minimal" }
+      ],
+      "forward_signals": [
+        "Q3 2026 guidance raised above Wall Street consensus",
+        "$100 billion additional share buyback authorized",
+        "Apple Intelligence features cited as upgrade driver for iPhone 17",
+        "A19 chip sourced from TSMC 3nm — supply tightening flagged into H2 2026",
+        "Services becoming dominant profit driver — structural shift underway"
+      ],
+      "analyst_take": "Record quarter across the board. iPhone 17 cycle stronger than 15/16. Key watchpoint: A19 TSMC supply constraints into H2 2026 could cap upside on iPhone units."
+    },
+    {
+      "ticker": "TSM",
+      "name": "TSMC",
+      "sector": "Semiconductor Foundry",
+      "relevance": "Primary foundry for Apple A-series, Qualcomm Snapdragon, Nvidia; leading-edge node availability",
+      "last_earnings": "Q1 2026 (Apr 2026)",
+      "financials": {
+        "revenue": "$35.89B",
+        "revenue_change": "+40.6% YoY",
+        "eps": "NT$22.08",
+        "gross_margin": "66.2%",
+        "stock_reaction": "Full-year guidance >30% growth maintained"
+      },
+      "key_segments": [
+        { "name": "Advanced Nodes (7nm+)", "revenue": "74% of wafer rev", "change": "Dominant", "note": "3nm alone = 25% of wafer revenue; AI chip demand primary driver" },
+        { "name": "2nm (N2)", "revenue": "Ramping", "change": "H2 2026 vol prod", "note": "On schedule; N2P/N2X variants in dev for 2027+" },
+        { "name": "3nm Capacity", "revenue": "200k wfpm target", "change": "Constrained", "note": "Market demand ~240-250k wfpm — supply gap persists" }
+      ],
+      "forward_signals": [
+        "Additional 3nm fab announced — capex toward high end of $52-56B range",
+        "CoWoS advanced packaging still the key bottleneck for AI GPU supply chains",
+        "Arizona fab (2nm) on track for 2026 production start",
+        "AI demand described as 'insatiable' — data center customers absorbing all capacity",
+        "Broke internal capacity rules to meet AI chip demand — rare signal of demand extremity"
+      ],
+      "analyst_take": "Best-in-class margins at scale. The real story is the capacity constraint decision — TSMC breaking its own rules to meet AI demand signals just how extreme the supply shortage is. 2nm ramp in H2 is the event to watch."
+    }
+  ]
+};
+
+// ── RENDER META ──
+function renderMeta() {
+  const m = DATA.meta;
+  document.getElementById('meta-client').textContent = m.client;
+  document.getElementById('meta-updated').textContent = new Date(m.last_updated).toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'});
+  document.getElementById('meta-next').textContent = new Date(m.next_update).toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
+  document.getElementById('meta-cadence').textContent = m.cadence;
+}
+
+// ── RENDER COMPANIES ──
+function renderCompanies() {
+  const grid = document.getElementById('company-grid');
+  grid.innerHTML = DATA.companies.map((co, i) => {
+    const revChange = co.financials.revenue_change || co.financials.eps_change || '';
+    const isUp = revChange.startsWith('+');
+    const isDown = revChange.startsWith('-');
+    const changeClass = isUp ? 'up' : isDown ? 'down' : 'neutral';
+
+    const segments = co.key_segments.map(seg => {
+      const segUp = (seg.change||'').startsWith('+');
+      const segDown = (seg.change||'').startsWith('-');
+      const segClass = segUp ? 'up' : segDown ? 'down' : 'neutral';
+      return `
+        <div class="segment-item">
+          <div class="seg-top">
+            <div class="seg-name">${seg.name}</div>
+            <div class="seg-rev">${seg.revenue || seg.status || ''}</div>
+          </div>
+          <div class="seg-change ${segClass}">${seg.change}</div>
+          <div class="seg-note">${seg.note}</div>
+        </div>`;
+    }).join('');
+
+    const signals = co.forward_signals.map(s =>
+      `<li class="signal-item"><span class="signal-icon">→</span> ${s}</li>`
+    ).join('');
+
+    const revenueDisplay = co.financials.revenue;
+    const epsBeat = co.financials.eps_beat || co.financials.eps_change || co.financials.gross_margin || '';
+
+    return `
+      <div class="company-card" id="card-${i}">
+        <div class="company-header" onclick="toggleCard(${i})">
+          <div class="company-left">
+            <div class="ticker-badge">${co.ticker}</div>
+            <div class="company-name-block">
+              <div class="company-name">${co.name}</div>
+              <div class="company-sector">${co.sector}</div>
+            </div>
+            <div class="earnings-tag">${co.last_earnings}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px">
+            <div class="company-financials-row">
+              <div class="fin-item">
+                <div class="fin-label">Revenue</div>
+                <div class="fin-value">${revenueDisplay}</div>
+                <div class="fin-change ${changeClass}">${revChange}</div>
+              </div>
+              <div class="fin-item">
+                <div class="fin-label">EPS / Margin</div>
+                <div class="fin-value">${co.financials.eps || co.financials.gross_margin}</div>
+                <div class="fin-change up">${epsBeat}</div>
+              </div>
+              <div class="fin-item">
+                <div class="fin-label">Market Reaction</div>
+                <div class="fin-value" style="font-size:13px;color:var(--gray-300)">${co.financials.stock_reaction}</div>
+              </div>
+            </div>
+            <div class="expand-icon">⌄</div>
+          </div>
+        </div>
+        <div class="company-body">
+          <div class="body-grid">
+            <div class="body-section">
+              <div class="body-section-title">📊 Segment Breakdown</div>
+              <div class="segment-list">${segments}</div>
+            </div>
+            <div class="body-section">
+              <div class="body-section-title">🔭 Forward Signals</div>
+              <ul class="signal-list">${signals}</ul>
+            </div>
+            <div class="analyst-box">
+              <div class="analyst-label">Agent Analysis</div>
+              <div class="analyst-text">${co.analyst_take}</div>
+            </div>
+            <div class="relevance-box">
+              <span class="relevance-label">Prismark relevance:</span>
+              <span>${co.relevance}</span>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleCard(i) {
+  document.getElementById('card-' + i).classList.toggle('open');
+}
+
+// ── ASK PEPPER ──
+function toggleAskPanel() {
+  document.getElementById('ask-panel').classList.toggle('open');
+}
+
+function askSuggestion(el) {
+  document.getElementById('ask-input').value = el.textContent;
+  submitQuestion();
+}
+
+const canned = {
+  "strongest ai": "Qualcomm has the most forward-looking AI signal — shipping custom silicon to a hyperscaler this year and partnering with OpenAI on 2028 device chips. TSMC's 'broke its own rules' comment is the strongest demand signal across all three.",
+  "supply constrained": "TSMC's 3nm is the tightest bottleneck. Market needs ~240-250k wfpm; TSMC is targeting 200k by year-end — that gap is real. CoWoS advanced packaging is the secondary constraint slowing AI GPU supply to Apple, Nvidia, and others.",
+  "summarize": "Qualcomm beat estimates by 16% despite Apple modem headwinds — auto and AI silicon are the new story. Apple had a blowout quarter with $111B revenue, led by a record iPhone 17 cycle and Services hitting $31B. TSMC is the backbone of it all, growing 41% YoY with margins expanding — but capacity is the constraint the whole industry is watching.",
+  "q3 2026": "Three things to watch in Q3: (1) TSMC 2nm volume production start — if it slips, that affects Apple's A20 and Qualcomm's next-gen chips. (2) Qualcomm's hyperscaler AI silicon first shipment — the first real proof point for their data center pivot. (3) Apple's iPhone 17 supply chain into fall — whether TSMC 3nm constraints cap unit growth."
+};
+
+function submitQuestion() {
+  const input = document.getElementById('ask-input');
+  const response = document.getElementById('ask-response');
+  const q = input.value.trim().toLowerCase();
+  if (!q) return;
+
+  response.textContent = '...';
+  response.classList.add('visible');
+
+  setTimeout(() => {
+    let answer = "Great question. Based on the research brief: all three companies are navigating the same AI-driven demand surge — the difference is their position in the stack. TSMC makes the chips, Qualcomm designs them, Apple buys them. The constraint is TSMC capacity, which affects everyone above it in the chain.";
+
+    for (const [key, val] of Object.entries(canned)) {
+      if (q.includes(key)) { answer = val; break; }
+    }
+
+    response.textContent = answer;
+  }, 700);
+  input.value = '';
+}
+
+// ── INIT ──
+renderMeta();
+renderCompanies();
+// Auto-expand first card
+document.getElementById('card-0').classList.add('open');
+</script>
+
+</body>
+</html>

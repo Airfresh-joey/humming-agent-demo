@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "client": "Prismark",
+    "last_updated": "2026-05-19T21:15:00-06:00",
+    "next_update": "2026-08-01T07:00:00-06:00",
+    "agent": "Humming Agent AI — Research Bot",
+    "cadence": "Quarterly (earnings season) + weekly news sweep"
+  },
+  "companies": [
+    {
+      "ticker": "QCOM",
+      "name": "Qualcomm",
+      "sector": "Semiconductors",
+      "relevance": "Mobile SoC, RF front-end, modem supply chain",
+      "last_earnings": "Q2 FY2026 (Apr 29, 2026)",
+      "financials": {
+        "revenue": "$10.6B",
+        "revenue_change": "-3% YoY",
+        "eps": "$2.65",
+        "eps_beat": "+16% vs consensus",
+        "stock_reaction": "+15% post-earnings"
+      },
+      "key_segments": [
+        { "name": "Automotive", "revenue": "$1.33B", "change": "+38% YoY", "note": "Record quarter; on track for $6B+ annualized run rate by end of FY2026" },
+        { "name": "IoT", "revenue": "$1.73B", "change": "+9% YoY", "note": "PC and edge AI devices driving growth" },
+        { "name": "Handsets (QCT)", "revenue": "$7.5B", "change": "Stable", "note": "Apple modem loss largely priced in; diversification offsetting" }
+      ],
+      "forward_signals": [
+        "Custom AI silicon shipping to leading hyperscaler data center client later in 2026",
+        "OpenAI collaboration announced — AI-focused smartphone chip targeting 2028 device",
+        "Agentic smartphone tier emerging (ZTE Nubia ByteDance, Xiaomi frameworks)",
+        "Memory shortage creating near-term mobile headwinds across the industry"
+      ],
+      "analyst_take": "Post-Apple modem reset largely absorbed. Diversification into auto and AI data center is the new growth story. Watch hyperscaler silicon ramp in H2 2026.",
+      "sources": [
+        "https://www.investing.com/news/transcripts/earnings-call-transcript-qualcomms-q2-2026-beats-expectations-stock-rises-93CH-4647253",
+        "https://www.androidcentral.com/phones/qualcomm/qualcomm-fy-q2-2026-earnings"
+      ]
+    },
+    {
+      "ticker": "AAPL",
+      "name": "Apple",
+      "sector": "Consumer Electronics / Software",
+      "relevance": "End-market demand signal; A-series chip architecture; component sourcing",
+      "last_earnings": "Q2 FY2026 (Apr 30, 2026)",
+      "financials": {
+        "revenue": "$111.2B",
+        "revenue_change": "+17% YoY",
+        "eps": "$2.01",
+        "eps_change": "+22% YoY",
+        "net_income": "$29.58B",
+        "stock_reaction": "Guidance raised above expectations"
+      },
+      "key_segments": [
+        { "name": "iPhone", "revenue": "$57.99B", "change": "+22% YoY", "note": "March quarter record; iPhone 17 family strongest lineup in Apple history; market share gains confirmed" },
+        { "name": "Services", "revenue": "$30.98B", "change": "+16.3% YoY", "note": "All-time high; double-digit growth in developed + emerging markets" },
+        { "name": "Other Products", "revenue": "$22.23B", "change": "+8% YoY", "note": "Mac and iPad stable; Vision Pro volume still minimal" }
+      ],
+      "forward_signals": [
+        "Raised Q3 2026 guidance above Wall Street consensus",
+        "$100 billion additional share buyback authorized",
+        "Dividend raised to $0.27/share",
+        "AI features cited as upgrade driver — Apple Intelligence pulling consumers to iPhone 17",
+        "A19 chip sourced from TSMC 3nm — supply tightening flagged"
+      ],
+      "analyst_take": "Record quarter across the board. iPhone 17 cycle stronger than iPhone 15/16. Services becoming dominant profit driver. Key watchpoint: A19 TSMC supply constraints into H2 2026.",
+      "sources": [
+        "https://www.macrumors.com/2026/04/30/apple-2q-2026-earnings/",
+        "https://9to5mac.com/2026/04/30/apple-reports-q2-2026-earnings-111-2-billion-in-revenue-up-17/"
+      ]
+    },
+    {
+      "ticker": "TSM",
+      "name": "TSMC",
+      "sector": "Semiconductor Foundry",
+      "relevance": "Primary foundry for Apple A-series, Qualcomm Snapdragon, Nvidia; leading-edge node availability",
+      "last_earnings": "Q1 2026 (Apr 2026)",
+      "financials": {
+        "revenue": "$35.89B USD",
+        "revenue_change": "+40.6% YoY",
+        "net_income": "NT$572.48B",
+        "net_income_change": "+58.3% YoY",
+        "gross_margin": "66.2%",
+        "operating_margin": "58.1%",
+        "full_year_guidance": ">30% revenue growth in USD"
+      },
+      "key_segments": [
+        { "name": "Advanced Nodes (7nm+)", "revenue_share": "74% of wafer revenue", "note": "3nm alone = 25% of wafer revenue — AI chip demand primary driver" },
+        { "name": "2nm (N2)", "status": "Volume production H2 2026", "note": "On track; N2P and N2X variants in development for 2027+" },
+        { "name": "3nm (N3)", "capacity": "Targeting 200k wfpm by year-end", "note": "Market demand ~240-250k wfpm — supply still constrained" }
+      ],
+      "forward_signals": [
+        "Additional 3nm-capable fab announced — capex toward high end of $52-56B range",
+        "CoWoS advanced packaging still constrained — key bottleneck for AI GPU supply",
+        "Arizona fab (2nm) on track for 2026 production start",
+        "AI demand described as 'insatiable' — data center customers pulling all available capacity",
+        "Rare decision to break internal capacity rules to meet AI chip demand"
+      ],
+      "analyst_take": "Best-in-class margins at scale. The real story is the capacity constraint decision — TSMC breaking its own rules to meet AI demand signals how extreme the supply shortage is. 2nm ramp in H2 is the key event to watch.",
+      "sources": [
+        "https://intellectia.ai/blog/tsmc-q1-2026-earnings-profit-surge-ai-chip-demand",
+        "https://siliconanalysts.com/analysis/tsmc-1q26-earnings"
+      ]
+    }
+  ]
+}
